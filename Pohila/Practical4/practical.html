@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let imgWidth;
+        function selectImage(img) {
+            selImgContainer.lastElementChild.src = img.src;
+        }
+        function mouseOnImg(img) {
+            imgWidth = img.width;
+            img.width *= 1.5;
+        }
+        function mouseOutImg(img) {
+            img.width = imgWidth;
+        }
+        function addV(img) {
+            var span = document.createElement('span');
+            span.style.position = "absolute";
+            span.style.left = (img.offsetLeft + img.width / 2) + "px";
+            span.append("⇓")
+
+            img.before(span);
+        }
+        function removeV(img) {
+            img.previousElementSibling.remove();
+        }
+    </script>
+    <h1>Выбор изображения из 3х</h1>
+    <center>
+        <IMG src="p1.jpg" width="200" name="pic1" onclick="selectImage(this)">
+        <IMG src="p2.jpg" width="200" name="pic2" onclick="selectImage(this)">
+        <IMG src="p3.jpg" width="200" name="pic3" onclick="selectImage(this)">
+    </center>
+    <center id="selImgContainer">
+        <img>
+    </center>
+    <h1>Приближающаяся картинка</h1>
+    <center>
+        <IMG src="p1.jpg" width="200" name="pic1" onmouseenter="mouseOnImg(this)" onmouseout="mouseOutImg(this)">
+        <IMG src="p2.jpg" width="200" name="pic2" onmouseenter="mouseOnImg(this)" onmouseout="mouseOutImg(this)">
+        <IMG src="p3.jpg" width="200" name="pic3" onmouseenter="mouseOnImg(this)" onmouseout="mouseOutImg(this)">
+    </center>
+    <h1>Горизонтальное меню</h1>
+    <center>
+        <IMG src="p1.jpg" width="200" name="pic1" onmouseenter="addV(this)" onmouseout="removeV(this)">
+        <IMG src="p2.jpg" width="200" name="pic2" onmouseenter="addV(this)" onmouseout="removeV(this)">
+        <IMG src="p3.jpg" width="200" name="pic3" onmouseenter="addV(this)" onmouseout="removeV(this)">
+    </center>
+</body>
+
+</html>
