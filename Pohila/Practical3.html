@@ -1,0 +1,90 @@
+<HTML>
+
+<HEAD>
+    <TITLE>Вычисление максимального значения</TITLE>
+    <script>
+        function maxval(obj) {
+            var a = Number(obj.num1.value);
+            var b = Number(obj.num2.value);
+            var c = Number(obj.num3.value);
+            obj.res.value = Math.max(a, b, c);
+        }
+        function maximum(form) {
+            let nums = form.elements[0].value.split(",").map((elem) => Number(elem));;
+            let maxi = Math.max(...nums);
+            form.elements[1].value = nums.filter((e) => e == maxi).length;
+        }
+        function CheckSides(form/*: HTMLFormElement/**/) {
+            let arr = [form.elements[0], form.elements[1], form.elements[2]].map((e) => e.value);
+            let max = Math.max(...arr);
+            let sum = 0;
+            arr.forEach(element => {
+                sum += +element;
+            });
+            form.lastElementChild.innerHTML = (sum - max > max) ? "Существует" : "Не существует";
+        }
+        function ordinate(form) {
+            let x = form.elements[0].value;
+            let y = form.elements[1].value;
+            console.log(x, y);
+            let res = "";
+            switch (true) {
+                case (x > 0 && y > 0):
+                    res = "Первый"
+                    break;
+                case (x < 0 && y > 0):
+                    res = "Второй";
+                    break;
+                case (x < 0 && y < 0):
+                    res = "Третий"
+                    break;
+                case (x > 0 && y < 0):
+                    res = "Четвертый"
+                    break;
+                default:
+                    res = "на линии";
+                    break;
+            }
+            form.lastElementChild.innerHTML = res;
+        }
+    </script>
+</HEAD>
+
+<BODY>
+    <H4>Вычисление максимального значения</H4>
+    <FORM name="form1">
+        Число 1: <input type="text" size=8 name="num1">
+        <hr> Число 2: <input type="text" size=8 name="num2">
+        <hr> Число 3: <input type="text" size=8 name="num3">
+        <hr> Максимальное значение равно
+        <input type="button" value=Определить onClick="maxval(form1)">
+        <input type="text" size=8 name="res">
+        <hr>
+        <input type="reset">
+    </FORM>
+    <h1>Максимальное значение</h1>
+    <form>
+        Перечислете через запятую числа:
+        <input type="text" oninput="maximum(form)">
+        <br>
+        <input type="text">
+    </form>
+    <h1>Существование треугольника</h1>
+    <form>
+        <input type="number">
+        <input type="number">
+        <input type="number">
+        <button type="button" onclick="CheckSides(form)">Проверить</button>
+        <h2></h2>
+    </form>
+    <form>
+        Введите X:
+        <input type="text">
+        Введите Y:
+        <input type="text">
+        <button type="button" onclick="ordinate(form)">Проверить</button>
+        <h2></h2>
+    </form>
+</BODY>
+
+</HTML>
