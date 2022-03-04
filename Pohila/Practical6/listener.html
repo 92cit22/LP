@@ -1,0 +1,90 @@
+<html>
+
+<HEAD>
+	<TITLE>Данные, представленные флажком. Анкета переводчика</TITLE>
+	<script>
+		function calculate(form) {
+			let res = 1;
+			["course", "duration", "lang", "report"].forEach(key => {
+				let val = form.elements[key];
+				if (!(val instanceof RadioNodeList && val[0].type == "checkbox"))
+					res *= Number(val.value);
+			});
+			document.body.lastElementChild.value = res + "у.е.";
+		}
+	</script>
+</HEAD>
+
+<body>
+	<h3>Анкета слушателя</h3>
+	<form>
+		<table>
+			<tr>
+				<td>
+					Курс:
+				</td>
+				<td>
+					<select name="course">
+						<option value="1">1</option>
+						<option value="1.5">2</option>
+						<option value="2">3</option>
+						<option value="3">4</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Продолжительность:
+				</td>
+				<td>
+					<select name="duration">
+						<option value="1000">Год</option>
+						<option value="300">Квартал</option>
+						<option value="100">Месяц</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Язык:
+				</td>
+				<td>
+					<label>
+						<input type="radio" checked value="1" name="lang">
+						Русский
+					</label>
+					<label>
+						<input type="radio" value="2" name="lang">
+						Английский
+					</label>
+					<label>
+						<input type="radio" value="2" name="lang">
+						Немецкий
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Форма отчетности
+				</td>
+				<td>
+					<label>
+						<input type="checkbox" value="1" name="report">
+						Тест
+					</label><label>
+						<input type="checkbox" value="1" name="report">
+						Реферат
+					</label><label>
+						<input type="checkbox" value="1" name="report">
+						Эссе
+					</label>
+				</td>
+			</tr>
+		</table>
+		<button type="button" onclick="calculate(form)">Рассчитать</button>
+	</form>
+	<h4>Итого:</h4>
+	<input type="text" disabled>
+</body>
+
+</html>
