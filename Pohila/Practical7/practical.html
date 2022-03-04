@@ -22,29 +22,33 @@
 				form.elements["colorInp"].style.display = "none"
 		}
 		function selectProd(select) {
-
 			let option = select.options[select.options.selectedIndex];
 			let price = option.dataset.price;
 			let inp = document.createElement("input");
-			inp.value = 1;
 
 			let table = select.previousElementSibling;
-			let tr = document.createElement("tr");
+			let tr = table.appendChild(document.createElement("tr"));
 			tr.setAttribute("product", select.value);
-			tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(select.value));
-			tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(price + "руб/шт"));
-			tr.appendChild(document.createElement("td")).appendChild(inp).parentElement.appendChild(document.createTextNode(" ед."));
+			tr.appendChild(document.createElement("td"))
+				.appendChild(document.createTextNode(select.value));
+			tr.appendChild(document.createElement("td"))
+				.appendChild(document.createTextNode(price + "руб/шт"));
+			tr.appendChild(document.createElement("td"))
+				.appendChild(inp)
+				.parentElement
+				.appendChild(document.createTextNode(" ед."));
 			let sum = tr.appendChild(document.createElement("td"));
-			sum.innerText = (inp.value * price) + "руб";
 			let p = tr.appendChild(document.createElement("td")).appendChild(document.createElement("p"))
+
+			inp.value = 1;
+			sum.innerText = (inp.value * price) + "руб";
 			p.innerText = "X";
 			p.style.cursor = "pointer";
 			p.style.color = "red";
+
 			inp.oninput = () => {
 				sum.innerText = (inp.value * price) + "руб";
 			}
-			tr.classList.add("tr");
-			table.append(tr);
 			p.onclick = () => {
 				select.options.add(option);
 				table.removeChild(tr);
@@ -70,10 +74,6 @@
 			height: 100px;
 			text-align: center;
 			box-sizing: border-box;
-		}
-
-		.tr {
-			border: 1px solid black;
 		}
 	</style>
 </head>
