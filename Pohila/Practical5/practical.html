@@ -1,0 +1,125 @@
+<html>
+
+<HEAD>
+    <TITLE>Данные из формы типа "переключатель". Событие Click
+    </TITLE>
+    <script>
+        function chLineWidth(form) {
+            let inp = Number(form.elements[0].value);
+            if (inp == "")
+                inp = 1
+            form.lastElementChild.width = inp;
+        }
+        function selectAlign(radio) {
+            radio.form.lastElementChild.align = radio.value;
+            console.dir(radio.form.lastElementChild);
+        }
+        function formAnket(form) {
+            let anketa = document.getElementById("anketa");
+            ["sex", "age", "family"].forEach(element => {
+                let value = form.elements[element].value;
+                if (value == "")
+                    value = "Не выбрано"
+                document.getElementById(element).innerText = value;
+            });
+            form.style.display = "none";
+            anketa.style.display = "";
+        }
+        function backToReplace() {
+            document.getElementById("anketa").style.display = "none";
+            document.forms[1].style.display = "block";
+        }
+    </script>
+</HEAD>
+
+<body>
+    <h1>Изменение размеров линии</h1>
+    <form>
+        Ширина линии:
+        <input type="text" oninput="chLineWidth(form)">
+        <br> Расположение:
+        <label>
+            <input type="radio" name="align" value="left" onchange="selectAlign(this)">Слева
+        </label>
+        <label>
+            <input type="radio" name="align" value="center" onchange="selectAlign(this)">По центру
+        </label>
+        <label>
+            <input type="radio" name="align" value="right" onchange="selectAlign(this)">Справа
+        </label>
+        <hr>
+    </form>
+    <h1>Анкета</h1>
+    <center>
+        <form>
+            <table>
+                <tr>
+                    <td>
+                        Ваш пол:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="radio" name="sex" value="Мужчина" checked>Мужчина
+                        </label>
+                        <label>
+                            <input type="radio" name="sex" value="Женщина">Женщина
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Ваш возраст:
+                    </td>
+                    <td>
+                        <input type="number" name="age" min="0" max="150">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Ваше семейное положение:
+                    </td>
+                    <td>
+                        <select name="family">
+                            <option value="Не выбрано">Не выбрано</option>
+                            <option value="Не женат">Не женат</option>
+                            <option value="Встречаюсь">Встречаюсь</option>
+                            <option value="Помолвлен">Помолвлен</option>
+                            <option value="Женат">Женат</option>
+                            <option value="Помолвлен">Помолвлен</option>
+                            <option value="В гражданском браке">В гражданском браке</option>
+                            <option value="Влюблён">Влюблён</option>
+                            <option value="Всё сложно">Всё сложно</option>
+                            <option value="В активном поиске">В активном поиске</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <input type="button" value="Сформировать анкету" onclick="formAnket(form)"></input>
+        </form>
+        <div style="display: none;" id="anketa">
+            <table>
+                <tr>
+                    <td>
+                        Ваш пол:
+                    </td>
+                    <td id="sex"></td>
+                </tr>
+                <tr>
+                    <td>
+                        Ваш возраст:
+                    </td>
+                    <td id="age"></td>
+                </tr>
+                <tr>
+                    <td>
+                        Ваше семейное положение:
+                    </td>
+                    <td id="family"></td>
+                </tr>
+            </table>
+            <button onclick="backToReplace()">Вернуться к формированию</button>
+        </div>
+    </center>
+</body>
+
+</html>
