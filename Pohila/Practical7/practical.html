@@ -1,0 +1,160 @@
+<html>
+
+<head>
+	<Title>Docs</Title>
+	<script>
+		var opts;
+		window.onload = () => {
+			opts = document.forms[1].elements[0].options
+			console.log(opts);
+		};
+		function selectImg(form, target) {
+			let color = form.elements["color"].value;
+			if (color == "self")
+				color = form.elements["colorInp"].value;
+			target.style.backgroundColor = color;
+			target.firstElementChild.src = form.elements["img"].value;
+		}
+		function selfColor(form, select) {
+			if (select.value == "self")
+				form.elements["colorInp"].style.display = "block"
+			else
+				form.elements["colorInp"].style.display = "none"
+		}
+		function selectProd(select) {
+
+			let option = select.options[select.options.selectedIndex];
+			let price = option.dataset.price;
+			let inp = document.createElement("input");
+			inp.value = 1;
+
+			let table = select.previousElementSibling;
+			let tr = document.createElement("tr");
+			tr.setAttribute("product", select.value);
+			tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(select.value));
+			tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(price + "руб/шт"));
+			tr.appendChild(document.createElement("td")).appendChild(inp).parentElement.appendChild(document.createTextNode(" ед."));
+			let sum = tr.appendChild(document.createElement("td"));
+			sum.innerText = (inp.value * price) + "руб";
+			let p = tr.appendChild(document.createElement("td")).appendChild(document.createElement("p"))
+			p.innerText = "X";
+			p.style.cursor = "pointer";
+			p.style.color = "red";
+			inp.oninput = () => {
+				sum.innerText = (inp.value * price) + "руб";
+			}
+			tr.classList.add("tr");
+			table.append(tr);
+			p.onclick = () => {
+				select.options.add(option);
+				table.removeChild(tr);
+				select.selectedIndex = 0;
+			}
+			select.options.remove(select.selectedIndex);
+			select.selectedIndex = 0;
+		}
+	</script>
+	<style>
+		td {
+			min-width: 100px;
+		}
+
+		img {
+			max-width: 100px;
+			max-height: 100px;
+		}
+
+		.cell {
+			border: 1px solid;
+			width: 100px;
+			height: 100px;
+			text-align: center;
+			box-sizing: border-box;
+		}
+
+		.tr {
+			border: 1px solid black;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Таблица</h1>
+	<form id="form1">
+		<table>
+			<tr class="row">
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+			</tr>
+			<tr class="row">
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+			</tr>
+			<tr class="row">
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+			</tr>
+			<tr class="row">
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+			</tr>
+			<tr class="row">
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+				<td class="cell" onClick="selectImg(form1, this)"><img></td>
+			</tr>
+		</table>
+		<select name="color" onchange="selfColor(form, this)">
+			<option value="transparent">Прозрачный</option>
+			<option value="yellow">Желтый</option>
+			<option value="red">Красный</option>
+			<option value="blue">Синий</option>
+			<option value="black">Черный</option>
+			<option value="white">Белый</option>
+			<option value="self">Свой цвет</option>
+		</select>
+		<select name="img">
+			<option value="">Без изображения</option>
+			<option value="../img/p1.jpg">Чашка</option>
+			<option value="../img/p2.jpg">Титаник</option>
+			<option value="../img/p3.jpg">Наклейки</option>
+			<option value="../img/b1.jpg">Маскоты</option>
+		</select>
+		<input type="text" name="colorInp" style="display: none;">
+	</form>
+	<h1>Продукты</h1>
+	<form>
+		<table>
+			<tr>
+				<th>Продукт</th>
+				<th>Цена</th>
+				<th>Количество</th>
+				<th>Сумма</th>
+			</tr>
+		</table>
+		<select name="prod" onchange="selectProd(this)">
+			<option value="" selected disabled>none</option>
+			<option value="Яблоко" data-price="15">Яблоко</option>
+			<option value="Груша" data-price="10">Груша</option>
+			<option value="Хлеб" data-price="30">Хлеб</option>
+			<option value="Молоко" data-price="70">Молоко</option>
+			<option value="Мясо" data-price="300">Мясо</option>
+		</select>
+	</form>
+</body>
+
+</html>
