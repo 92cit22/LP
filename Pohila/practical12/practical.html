@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        var interval = 1;
+        var flag = false;
+        var countImg = 1;
+        var arr = [];
+        var posArr = [];
+        window.onload = () => {
+            for (let i = 1; i < 641; i++)
+                arr[i] = "gif/gif_" + i.toLocaleString('ru-ru', { minimumIntegerDigits: 5, useGrouping: false }) + ".png";
+            for (let i = 0; i < Math.random() * 100; i++)
+                posArr.push(Math.round(Math.random() * 100 - 50))
+            posNumbers.append(posArr)
+        }
+        function playMult(button) {
+            if (flag) {
+                countImg = 1;
+                return;
+            }
+            flag = true
+            interval = setInterval(x => {
+                if (countImg >= 641) countImg = 1;
+                button.previousElementSibling.src = arr[countImg++];
+            }, 50)
+        }
+        function stopMult() {
+            clearInterval(interval)
+            flag = false;
+        }
+        function positiveNumberCount(button) {
+            button.nextElementSibling.lastElementChild.innerHTML = posArr.filter(x => x > 0).length;
+            button.nextElementSibling.nextElementSibling.lastElementChild.innerHTML = Math.max(...posArr);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Мультик</h1>
+    <img src="gif/gif_00001.png">
+    <button type="button" onclick="playMult(this)">Начать</button>
+    <button type="button" onclick="stopMult(this)">Остановить</button>
+    <h1>Положительные числа</h1>
+    <p id="posNumbers"></p>
+    <button type="button" onclick="positiveNumberCount(this)">Рассчитать</button>
+    <p>Количество положительных: <b></b></p>
+    <p>Максимальное значение: <b></b></p>
+</body>
+
+</html>
