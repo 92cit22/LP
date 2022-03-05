@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script>
+		function wordCount(textarea) {
+			textarea.nextElementSibling.lastElementChild.innerHTML = textarea.value.split(' ').filter(x => x !== '').length;
+		}
+		function replaceAllWords(form) {
+			while (form.data.value.includes(form.find.value)) {
+				form.data.value = form.data.value.replace(form.find.value, form.replace.value);
+			}
+		}
+		function replaceOneWord(form) {
+			form.data.value = form.data.value.replace(form.find.value, form.replace.value);
+		}
+		function compress(button) {
+			while (button.previousElementSibling.value.includes("  ")) {
+				button.previousElementSibling.value = button.previousElementSibling.value.replace("  ", " ")
+			}
+		}
+	</script>
+</head>
+
+<body>
+	<h1>Количество слов в тексте</h1>
+	<textarea id="" cols="30" rows="10" oninput="wordCount(this)"></textarea>
+	<p>Количество слов: <span>0</span></p>
+	<h1>Замена слов</h1>
+	<form>
+		<textarea name="data" cols="30" rows="10"></textarea>
+		<table>
+			<tr>
+				<th>
+					Что:
+				</th>
+				<td>
+					<input name="find" type="text">
+				</td>
+			</tr>
+			<tr>
+				<th>
+					На что:
+				</th>
+				<td>
+					<input name="replace" type="text">
+				</td>
+			</tr>
+		</table>
+		<button type="button" onclick="replaceOneWord(form)">Заменить</button>
+		<button type="button" onclick="replaceAllWords(form)">Заменить все</button>
+	</form>
+	<h1>Сжатие пробелов</h1>
+	<div>
+		<textarea cols="30" rows="10"></textarea>
+		<button type="button" onclick="compress(this)">Сжать</button>
+	</div>
+</body>
+
+</html>
