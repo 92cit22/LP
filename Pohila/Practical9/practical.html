@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function switchSymbols(form) {
+            form.lastElementChild.innerText = form.elements[0].value.split('').reverse().join('');
+        }
+        function calcTickets(btn) {
+            let count = 0;
+            for (let i = 100000; i < 1000000; i++) {
+                let r = 0;
+                let l = 0;
+                String(i % 1000).split('').forEach(x => r += Number(x));
+                String(Math.floor(i / 1000)).split('').forEach(x => l += Number(x));
+                if (l == r) count++
+            }
+            btn.nextElementSibling.innerHTML = count;
+        }
+        function calcDelimeters(form) {
+            let num = form.elements[0].value;
+            let delim = [];
+            for (let i = 1; i <= num / 2; i++) {
+                if ((num / i * 10) % 10 == 0)
+                    delim.push(i);
+            }
+            delim.push(Number(num));
+            let p = form.lastElementChild
+            p.innerHTML = "";
+            p.append(delim);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Перевернуть символы</h1>
+    <form>
+        <input type="text">
+        <button type="button" onclick="switchSymbols(form)">Перевернуть</button>
+        <br>
+        <p></p>
+    </form>
+    <h1>Номера</h1>
+    <button onclick="calcTickets(this)">рассчитать</button>
+    <p></p>
+    <h1>Все делители числа</h1>
+    <form>
+        <input type="text">
+        <button type="button" onclick="calcDelimeters(form)">рассчитать</button>
+        <p></p>
+    </form>
+</body>
+
+</html>
