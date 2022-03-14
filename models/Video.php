@@ -8,10 +8,11 @@ use Yii;
 /**
  * This is the model class for table "Video".
  *
- * @property int $ID
+ * @property int $Id
  * @property string $Title
  * @property string $Description
- * @property DateTime|string $CreatedAt
+ * @property string $Url
+ * @property DateTime $CreatedAt
  * @property int $UserId
  * @property int $CategoryId
  *
@@ -27,7 +28,7 @@ class Video extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'Video';
+        return 'Videos';
     }
 
     /**
@@ -36,12 +37,12 @@ class Video extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Title', 'Description', 'CreatedAt', 'UserId', 'CategoryId'], 'required'],
+            [['Title', 'Description', 'UserId', 'CategoryId'], 'required'],
             [['Title', 'Description'], 'string'],
-            [['CreatedAt'], 'datetime', 'format' => 'php:Y-m-d', 'message' => 'Неверный формат'],
-            [['UserId', 'CategoryId'], 'default', 'value' => null],
+            // [['CreatedAt'], 'datetime', 'format' => 'php:Y-m-d', 'message' => 'Неверный формат'],
+            [['UserId', 'CategoryId', 'CreatedAt'], 'default', 'value' => null],
             [['UserId', 'CategoryId'], 'integer'],
-            [['CategoryId'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['CategoryId' => 'ID']],
+            [['CategoryId'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['CategoryId' => 'Id']],
             [['UserId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['UserId' => 'Id']],
         ];
     }
@@ -52,7 +53,7 @@ class Video extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'ID' => 'ID',
+            'Id' => 'ID',
             'Title' => 'Title',
             'Description' => 'Description',
             'CreatedAt' => 'Created At',
@@ -73,7 +74,7 @@ class Video extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Categories::className(), ['ID' => 'CategoryId']);
+        return $this->hasOne(Categories::className(), ['Id' => 'CategoryId']);
     }
 
     /**
@@ -83,7 +84,7 @@ class Video extends \yii\db\ActiveRecord
      */
     public function getCommentaries()
     {
-        return $this->hasMany(Commentaries::className(), ['VideoId' => 'ID']);
+        return $this->hasMany(Commentaries::className(), ['VideoId' => 'Id']);
     }
 
     /**
@@ -93,7 +94,7 @@ class Video extends \yii\db\ActiveRecord
      */
     public function getLikes()
     {
-        return $this->hasMany(Likes::className(), ['VideoId' => 'ID']);
+        return $this->hasMany(Likes::className(), ['VideoId' => 'Id']);
     }
 
     /**

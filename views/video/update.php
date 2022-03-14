@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = 'Update Video: ' . $model->Title;
 $this->params['breadcrumbs'][] = ['label' => 'Videos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->Title, 'url' => ['view', 'ID' => $model->ID]];
+$this->params['breadcrumbs'][] = ['label' => $model->Title, 'url' => ['view', 'Id' => $model->Id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="video-update">

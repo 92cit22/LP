@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "Categories".
  *
- * @property int $ID
+ * @property int $Id
  * @property string $Title
  *
  * @property Video[] $videos
@@ -39,7 +39,7 @@ class Categories extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'ID' => 'ID',
+            'Id' => 'Id',
             'Title' => 'Title',
         ];
     }
@@ -51,6 +51,6 @@ class Categories extends \yii\db\ActiveRecord
      */
     public function getVideos()
     {
-        return $this->hasMany(Video::className(), ['CategoryId' => 'ID']);
+        return $this->hasMany(Video::className(), ['CategoryId' => 'Id']);
     }
 }

@@ -12,15 +12,15 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'Title')->textInput() ?>
+    <?= $form->field($model, 'Title')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'Description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'CreatedAt')->hiddenInput(['value' => DateTime::createFromFormat('Y-m-d', date('Y-m-d'))])->label('') ?>
+    <?= $form->field($model, 'UserId')->textInput() ?>
 
-    <?= $form->field($model, 'UserId')->hiddenInput(['value' => Yii::$app->user->id])->label('') ?>
+    <?= $form->field($model, 'CategoryId')->textInput() ?>
 
-    <?= $form->field($model, 'CategoryId')->hiddenInput(['value' => 1])->label('') ?>
+    <?= $form->field($model, 'CreatedAt')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

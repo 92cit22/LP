@@ -70,6 +70,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return $this->Password;
     }
+
+    public function setPassword($value)
+    {
+        $this->Password = $value;
+    }
     public function getUsername()
     {
         return $this->Username;
@@ -107,7 +112,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function tableName()
     {
-        return 'User';
+        return 'Users';
     }
 
     /**
@@ -119,7 +124,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['Email', 'Password', 'ConfirmPassword', 'Username'], 'required', 'message' => 'Данное поле обязательно для заполнения'],
             [['Email', 'Password', 'AuthKey', 'AccessToken'], 'string'],
             [['Role'], 'integer'],
-            [['Role'], 'default', 'value' => 2],
+            [['AuthKey', 'AccessToken'], 'default', 'value' => ""],
             [['Email'], 'email'],
             [['Email'], 'unique', 'message' => 'Пользователь с такой электронной почтой уже существует'],
             [['Username'], 'unique', 'message' => 'Пользователь с таким ником уже существует'],

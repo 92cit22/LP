@@ -3,8 +3,6 @@
 namespace app\controllers;
 
 use app\models\Video;
-use DateTime;
-use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -41,14 +39,16 @@ class VideoController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Video::find(),
+            /*
             'pagination' => [
                 'pageSize' => 50
             ],
             'sort' => [
                 'defaultOrder' => [
-                    'ID' => SORT_DESC,
+                    'Id' => SORT_DESC,
                 ]
             ],
+            */
         ]);
 
         return $this->render('index', [
@@ -58,14 +58,14 @@ class VideoController extends Controller
 
     /**
      * Displays a single Video model.
-     * @param int $ID ID
+     * @param int $Id ID
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($ID)
+    public function actionView($Id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($ID),
+            'model' => $this->findModel($Id),
         ]);
     }
 
@@ -76,16 +76,11 @@ class VideoController extends Controller
      */
     public function actionCreate()
     {
-        if (Yii::$app->user->isGuest) {
-            return $this->goBack();
-        }
         $model = new Video();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->CreatedAt = DateTime::createFromFormat('Y-m-d', $model->CreatedAt);
-                if ($model->save())
-                    return $this->redirect(['view', 'ID' => $model->ID]);
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'Id' => $model->Id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -99,19 +94,16 @@ class VideoController extends Controller
     /**
      * Updates an existing Video model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $ID ID
+     * @param int $Id ID
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($ID)
+    public function actionUpdate($Id)
     {
-        if (Yii::$app->user->isGuest) {
-            return $this->goBack();
-        }
-        $model = $this->findModel($ID);
+        $model = $this->findModel($Id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'ID' => $model->ID]);
+            return $this->redirect(['view', 'Id' => $model->Id]);
         }
 
         return $this->render('update', [
@@ -122,16 +114,13 @@ class VideoController extends Controller
     /**
      * Deletes an existing Video model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $ID ID
+     * @param int $Id ID
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($ID)
+    public function actionDelete($Id)
     {
-        if (Yii::$app->user->isGuest) {
-            return $this->goBack();
-        }
-        $this->findModel($ID)->delete();
+        $this->findModel($Id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -139,13 +128,13 @@ class VideoController extends Controller
     /**
      * Finds the Video model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $ID ID
+     * @param int $Id ID
      * @return Video the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($Id)
     {
-        if (($model = Video::findOne($id)) !== null) {
+        if (($model = Video::findOne($Id)) !== null) {
             return $model;
         }
 
