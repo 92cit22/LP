@@ -1,5 +1,7 @@
 <?php
 
+use app\models\Categories;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -12,15 +14,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'Title')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'Title')->textInput() ?>
 
     <?= $form->field($model, 'Description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'UserId')->textInput() ?>
+    <?= $form->field($model, 'CategoryId')->dropDownList(ArrayHelper::map(Categories::find()->all(), 'Id', 'Title')) ?>
 
-    <?= $form->field($model, 'CategoryId')->textInput() ?>
+    <?= $form->field($model, 'video')->fileInput()->label('') ?>
 
-    <?= $form->field($model, 'CreatedAt')->textInput() ?>
+    <?= $form->field($model, 'UserId')->hiddenInput(['value' => Yii::$app->user->id])->label('') ?>
+
+    <!-- <= $form->field($model, 'CreatedAt')->hiddenInput()->label('') ?> -->
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

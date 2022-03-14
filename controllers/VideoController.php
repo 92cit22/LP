@@ -7,6 +7,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * VideoController implements the CRUD actions for Video model.
@@ -62,10 +63,10 @@ class VideoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($Id)
+    public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($Id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -79,8 +80,9 @@ class VideoController extends Controller
         $model = new Video();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'Id' => $model->Id]);
+            if ($model->load($this->request->post())) {
+                if ($model->upload() && $model->save())
+                    return $this->redirect(['view', 'Id' => $model->Id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -98,12 +100,12 @@ class VideoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($Id)
+    public function actionUpdate($id)
     {
-        $model = $this->findModel($Id);
+        $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'Id' => $model->Id]);
+            return $this->redirect(['view', 'id' => $model->Id]);
         }
 
         return $this->render('update', [
@@ -118,9 +120,9 @@ class VideoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($Id)
+    public function actionDelete($id)
     {
-        $this->findModel($Id)->delete();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -132,9 +134,9 @@ class VideoController extends Controller
      * @return Video the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($Id)
+    protected function findModel($id)
     {
-        if (($model = Video::findOne($Id)) !== null) {
+        if (($model = Video::findOne($id)) !== null) {
             return $model;
         }
 

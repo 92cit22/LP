@@ -4,6 +4,7 @@ namespace app\models;
 
 use DateTime;
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "Video".
@@ -23,6 +24,7 @@ use Yii;
  */
 class Video extends \yii\db\ActiveRecord
 {
+    public $video;
     /**
      * {@inheritdoc}
      */
@@ -39,11 +41,11 @@ class Video extends \yii\db\ActiveRecord
         return [
             [['Title', 'Description', 'UserId', 'CategoryId'], 'required'],
             [['Title', 'Description'], 'string'],
-            // [['CreatedAt'], 'datetime', 'format' => 'php:Y-m-d', 'message' => 'Неверный формат'],
-            [['UserId', 'CategoryId', 'CreatedAt'], 'default', 'value' => null],
+            [['UserId', 'CategoryId'], 'default', 'value' => null],
             [['UserId', 'CategoryId'], 'integer'],
-            [['CategoryId'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['CategoryId' => 'Id']],
-            [['UserId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['UserId' => 'Id']],
+            ['video', 'file', 'extensions' => 'mp4,3gp,mov,m4v,mpeg,mpg'],
+            ['CategoryId', 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['CategoryId' => 'Id']],
+            ['UserId', 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['UserId' => 'Id']],
         ];
     }
 
@@ -62,10 +64,20 @@ class Video extends \yii\db\ActiveRecord
         ];
     }
 
-    // public function setCreatedAt(string $value)
-    // {
-    //     DateTime($value)
-    // }
+    public function upload()
+    {
+        $this->video = UploadedFile::getInstance($this, 'video');
+        if (!$this->validate())
+            return false;
+        if (!empty($this->video)) {
+            $temp_name = time() . '.' . $this->video->extension;
+            if ($this->video->saveAs(Upload . $temp_name)) {
+                $this->Url = Upload . $temp_name;
+                $this->video = null;
+            }
+        }
+        return true;
+    }
 
     /**
      * Gets query for [[Category]].
