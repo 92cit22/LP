@@ -47,7 +47,7 @@ class VideoController extends Controller
         }
         $query = Video::find();
         if (!Yii::$app->user->identity->isAdmin)
-            $query->where(['UserId' => Yii::$app->user->id])->andWhere('Status != 4');
+            $query->where(['UserId' => Yii::$app->user->id])->andWhere('"Status" != 4');
         else if ($this->request->isPost) {
             $video = Video::findOne(['Id' => $_POST['Video']['Id']]);
             $video->Status = $_POST['Video']['Status'];
@@ -114,7 +114,7 @@ class VideoController extends Controller
 
         if ($this->request->isPost && $model->load($this->request->post())) {
             if ($model->upload() && $model->save())
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->Id]);
         } else {
             $model->loadDefaultValues();
         }
