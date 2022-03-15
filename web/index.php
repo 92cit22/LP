@@ -1,5 +1,11 @@
 <?php
-define("Upload",  'web\upload');
+define("Upload",  'web/upload/');
+define('DATE_FORMAT', 'd.M.Y в H:i');
+
+function formatPrint($var, $isDump = false)
+{
+    return '<pre>' . ($isDump) ? var_dump($var) : print_r($var, true) . '</pre>';
+}
 
 // comment out the following two lines when deployed to production
 defined('YII_DEBUG') or define('YII_DEBUG', true);

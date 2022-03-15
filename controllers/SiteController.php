@@ -10,6 +10,8 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\User;
+use app\models\Video;
+use yii\data\ActiveDataProvider;
 
 class SiteController extends Controller
 {
@@ -62,7 +64,28 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->redirect(['/video/index']);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Video::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            */
+            'sort' => [
+                'defaultOrder' => [
+                    'CreatedAt' => SORT_DESC,
+                ],
+                'attributes' => [
+                    'Title',
+                    'CreatedAt'
+                ]
+            ],
+
+        ]);
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
@@ -95,6 +118,7 @@ class SiteController extends Controller
         $model = new User();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->save();
+            Yii::$app->user->login($model->toLogin());
             return $this->goHome();
         }
         $model->Password = $model->ConfirmPassword = "";

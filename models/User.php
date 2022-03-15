@@ -55,7 +55,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public static function findSelf($cond)
     {
         $user = self::findOne($cond);
-        return ($user !== null) ? new static($user) : null;
+        return ($user !== null) ? $user->toLogin() : null;
     }
 
     /**
@@ -105,6 +105,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         return $this->password === $password;
+    }
+
+    public function toLogin()
+    {
+        return new static($this);
     }
 
     /**

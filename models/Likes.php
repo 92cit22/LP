@@ -16,6 +16,16 @@ use Yii;
  */
 class Likes extends \yii\db\ActiveRecord
 {
+
+    public static function Positive(Likes $like)
+    {
+        return $like->Like;
+    }
+
+    public static function Negative(Likes $like)
+    {
+        return !$like->Like;
+    }
     /**
      * {@inheritdoc}
      */

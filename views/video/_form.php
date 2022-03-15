@@ -20,11 +20,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'CategoryId')->dropDownList(ArrayHelper::map(Categories::find()->all(), 'Id', 'Title')) ?>
 
-    <?= $form->field($model, 'video')->fileInput()->label('') ?>
+    <?= $form->field($model, 'video')->fileInput(['value' => $model->Url]) ?>
 
     <?= $form->field($model, 'UserId')->hiddenInput(['value' => Yii::$app->user->id])->label('') ?>
-
-    <!-- <= $form->field($model, 'CreatedAt')->hiddenInput()->label('') ?> -->
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

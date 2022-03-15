@@ -11,7 +11,7 @@ use Yii;
  * @property string $Text
  * @property int $UserId
  * @property int $VideoId
- * @property string $CreatedAt
+ * @property DateTime $CreatedAt
  *
  * @property User $user
  * @property Video $video
@@ -32,13 +32,12 @@ class Commentaries extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Text', 'UserId', 'VideoId', 'CreatedAt'], 'required'],
+            [['Text', 'UserId', 'VideoId'], 'required', 'message' => 'Поле "{attribute}" должно быть обязательно заполнено'],
             [['Text'], 'string'],
             [['UserId', 'VideoId'], 'default', 'value' => null],
             [['UserId', 'VideoId'], 'integer'],
-            [['CreatedAt'], 'safe'],
             [['UserId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['UserId' => 'Id']],
-            [['VideoId'], 'exist', 'skipOnError' => true, 'targetClass' => Video::className(), 'targetAttribute' => ['VideoId' => 'ID']],
+            [['VideoId'], 'exist', 'skipOnError' => true, 'targetClass' => Video::className(), 'targetAttribute' => ['VideoId' => 'Id']],
         ];
     }
 
@@ -48,11 +47,11 @@ class Commentaries extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'Id' => 'ID',
-            'Text' => 'Text',
-            'UserId' => 'User ID',
-            'VideoId' => 'Video ID',
-            'CreatedAt' => 'Created At',
+            'Id' => 'Идентификатор',
+            'Text' => 'Комментарий',
+            'UserId' => 'Автор',
+            'VideoId' => 'Видео',
+            'CreatedAt' => 'Дата создания',
         ];
     }
 
@@ -73,6 +72,6 @@ class Commentaries extends \yii\db\ActiveRecord
      */
     public function getVideo()
     {
-        return $this->hasOne(Video::className(), ['ID' => 'VideoId']);
+        return $this->hasOne(Video::className(), ['Id' => 'VideoId']);
     }
 }

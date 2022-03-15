@@ -13,14 +13,16 @@ use yii\web\UploadedFile;
  * @property string $Title
  * @property string $Description
  * @property string $Url
+ * @property string $MimeType
  * @property DateTime $CreatedAt
  * @property int $UserId
  * @property int $CategoryId
  *
- * @property Categories $category
+ * @property Categories $Category
  * @property Commentaries[] $commentaries
- * @property Likes[] $likes
- * @property User $user
+ * @property int $Likes
+ * @property int $Dislikes
+ * @property User $User
  */
 class Video extends \yii\db\ActiveRecord
 {
@@ -39,7 +41,7 @@ class Video extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Title', 'Description', 'UserId', 'CategoryId'], 'required'],
+            [['Title', 'UserId', 'CategoryId', 'video'], 'required', 'message' => 'Поле "{attribute}" должно быть обязательно заполнено'],
             [['Title', 'Description'], 'string'],
             [['UserId', 'CategoryId'], 'default', 'value' => null],
             [['UserId', 'CategoryId'], 'integer'],
@@ -55,12 +57,16 @@ class Video extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'Id' => 'ID',
-            'Title' => 'Title',
-            'Description' => 'Description',
-            'CreatedAt' => 'Created At',
-            'UserId' => 'User ID',
-            'CategoryId' => 'Category ID',
+            'Id' => 'Идентификатор',
+            'Title' => 'Название',
+            'Description' => 'Описание',
+            'CreatedAt' => 'Дата создания',
+            'UserId' => 'Пользователь',
+            'CategoryId' => 'Категория',
+            'video' => 'Видео',
+            'Likes' => 'Понравилось',
+            'Dislikes' => 'Непонравилось',
+            'Url' => 'Видео',
         ];
     }
 
@@ -70,13 +76,24 @@ class Video extends \yii\db\ActiveRecord
         if (!$this->validate())
             return false;
         if (!empty($this->video)) {
-            $temp_name = time() . '.' . $this->video->extension;
-            if ($this->video->saveAs(Upload . $temp_name)) {
-                $this->Url = Upload . $temp_name;
-                $this->video = null;
-            }
+            $temp_name = Upload . time() . '.' . $this->video->extension;
+            $this->Url = $temp_name;
+            $this->MimeType = $this->video->type;
+            if (!$this->video->saveAs($temp_name))
+                return false;
+            $this->video->tempName = $this->Url;
         }
         return true;
+    }
+
+    public function getLikes()
+    {
+        return $this->allLikes()->where(['Like' => true])->count();
+    }
+
+    public function getDislikes()
+    {
+        return $this->allLikes()->where(['Like' => false])->count();
     }
 
     /**
@@ -104,7 +121,7 @@ class Video extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getLikes()
+    public function allLikes()
     {
         return $this->hasMany(Likes::className(), ['VideoId' => 'Id']);
     }

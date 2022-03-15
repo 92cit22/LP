@@ -2,7 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Commentaries;
 use app\models\Video;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -38,18 +40,26 @@ class VideoController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/site/login']);
+        }
         $dataProvider = new ActiveDataProvider([
-            'query' => Video::find(),
+            'query' => Video::find()->where(['UserId' => Yii::$app->user->Id]),
             /*
             'pagination' => [
                 'pageSize' => 50
             ],
+            */
             'sort' => [
-                'defaultOrder' => [
-                    'Id' => SORT_DESC,
+                // 'defaultOrder' => [
+                //     'Id' => SORT_DESC,
+                // ],
+                'attributes' => [
+                    'Title',
+                    'CreatedAt'
                 ]
             ],
-            */
+
         ]);
 
         return $this->render('index', [
@@ -63,10 +73,19 @@ class VideoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($Id)
     {
+        $comment = new Commentaries();
+        if ($this->request->isPost && $comment->load($this->request->post())) {
+            if ($comment->validate()) {
+                $comment->save();
+                return $this->redirect(['view', 'Id' => $Id]);
+            }
+        }
+        $comment->loadDefaultValues();
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($Id),
+            'commentaries' => $comment,
         ]);
     }
 
@@ -79,11 +98,9 @@ class VideoController extends Controller
     {
         $model = new Video();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                if ($model->upload() && $model->save())
-                    return $this->redirect(['view', 'Id' => $model->Id]);
-            }
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            if ($model->upload() && $model->save())
+                return $this->redirect(['view', 'Id' => $model->Id]);
         } else {
             $model->loadDefaultValues();
         }
@@ -100,12 +117,12 @@ class VideoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($Id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($Id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->Id]);
+            return $this->redirect(['view', 'Id' => $model->Id]);
         }
 
         return $this->render('update', [
@@ -120,9 +137,9 @@ class VideoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($Id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($Id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -134,9 +151,9 @@ class VideoController extends Controller
      * @return Video the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($Id)
     {
-        if (($model = Video::findOne($id)) !== null) {
+        if (($model = Video::findOne($Id)) !== null) {
             return $model;
         }
 
