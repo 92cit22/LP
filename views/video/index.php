@@ -4,6 +4,7 @@ use app\models\Video;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -26,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'Title',
 				'format' => 'html',
 				'value' => function (Video $data) {
-					return Html::a($data->Title, Url::toRoute(["view", 'Id' => $data->Id]));
+					return Html::a($data->Title, Url::toRoute(["view", 'id' => $data->Id]));
 				},
 			],
 			'Description:ntext',
@@ -46,10 +47,24 @@ $this->params['breadcrumbs'][] = $this->title;
 				},
 			],
 			'CreatedAt:datetime',
+			[
+				'attribute' => 'Status',
+				'format' => 'raw',
+				'value' => function (Video $data) {
+					if (Yii::$app->user->identity->isAdmin) {
+						return Html::beginForm('', 'post', ['class' => 'form-inline'])
+							. Html::activeDropDownList($data, 'Status', Video::StatusesDict(), ['selected' => $data->Status])
+							. Html::activeHiddenInput($data, 'Id', ['value' => $data->Id])
+							. Html::submitButton('Сменить статус', ['class' => 'btn btn-primary'])
+							. Html::endForm();
+					} else {
+						return $data->Status;
+					}
+				}
+			],
 
-			['class' => 'yii\grid\ActionColumn'],
+			['class' => (Yii::$app->user->identity->isAdmin) ? 'yii\grid\Column' : 'yii\grid\ActionColumn'],
 		],
 	]); ?>
-
 
 </div>

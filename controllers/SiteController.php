@@ -65,7 +65,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Video::find(),
+            'query' => Video::find()->where(['Status' => 1]),
             /*
             'pagination' => [
                 'pageSize' => 50

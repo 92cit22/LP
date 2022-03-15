@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'Title',
                 'format' => 'html',
                 'value' => function (Video $data) {
-                    return Html::a($data->Title, Url::toRoute(["/video/view", 'Id' => $data->Id]));
+                    return Html::a($data->Title, Url::toRoute(["/video/view", 'id' => $data->Id]));
                 },
             ],
             [

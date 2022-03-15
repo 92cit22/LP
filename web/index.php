@@ -2,9 +2,9 @@
 define("Upload",  'web/upload/');
 define('DATE_FORMAT', 'd.M.Y в H:i');
 
-function formatPrint($var, $isDump = false)
+function formatPrint($var)
 {
-    return '<pre>' . ($isDump) ? var_dump($var) : print_r($var, true) . '</pre>';
+    return '<pre>' .  print_r($var, true) . '</pre>';
 }
 
 // comment out the following two lines when deployed to production

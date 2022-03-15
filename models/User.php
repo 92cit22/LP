@@ -23,6 +23,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     public $ConfirmPassword;
 
+    public function getIsAdmin()
+    {
+        return $this->Role === 1;
+    }
     /**
      * {@inheritdoc}
      */

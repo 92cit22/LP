@@ -39,7 +39,7 @@ AppAsset::register($this);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav'],
             'items' => [
-                ['label' => 'Видео', 'url' => ['/video/index']],
+                ['label' => 'Видео', 'url' => ['/video/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => 'Связаться с нами', 'url' => ['/site/contact']],
                 ['label' => 'Регистрация', 'url' => ['/site/registration'], 'visible' => Yii::$app->user->isGuest],
                 Yii::$app->user->isGuest ? (['label' => 'Авторизация', 'url' => ['/site/login']]

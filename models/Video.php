@@ -15,6 +15,7 @@ use yii\web\UploadedFile;
  * @property string $Url
  * @property string $MimeType
  * @property DateTime $CreatedAt
+ * @property int $Status
  * @property int $UserId
  * @property int $CategoryId
  *
@@ -33,6 +34,21 @@ class Video extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'Videos';
+    }
+
+    public static function StatusesDict()
+    {
+        return [
+            1 => 'Нет ограничений',
+            2 => 'Теневой бан',
+            3 => 'Нарушение',
+            4 => 'Бан',
+        ];
+    }
+
+    public function getStatusText()
+    {
+        return self::StatusesDict()[$this->Status];
     }
 
     /**
@@ -67,6 +83,7 @@ class Video extends \yii\db\ActiveRecord
             'Likes' => 'Понравилось',
             'Dislikes' => 'Непонравилось',
             'Url' => 'Видео',
+            'Status' => 'Ограничение'
         ];
     }
 
