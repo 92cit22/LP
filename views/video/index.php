@@ -39,13 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
 					return $data->category->Title;
 				},
 			],
-			[
-				'label' => 'Автор',
-				'attribute' => 'UserId',
-				'value' => function (Video $data) {
-					return $data->user->Username;
-				},
-			],
 			'CreatedAt:datetime',
 			[
 				'attribute' => 'Status',
